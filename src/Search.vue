@@ -1,240 +1,223 @@
 <script lang="ts" setup>
 import { ref, onMounted, computed } from "vue";
-import { useData, withBase } from "vitepress";
-// @ts-ignore
-import Index from "./module/index.js";
+// import { useData, withBase } from "vitepress";
+// // @ts-ignore
+// import Index from "./module/index.js";
 
-//TODO: delete deprecate code
-const VPData = useData();
+// //TODO: delete deprecate code
+// const VPData = useData();
 
-// @ts-ignore
-const locale = VPData.localeIndex || VPData.localePath;
+// // @ts-ignore
+// const locale = VPData.localeIndex || VPData.localePath;
 
-const metaKey = ref();
-const open = ref<Boolean>(false);
-const searchTerm = ref<string | null>();
-const origin = ref<string>("");
-const input = ref();
-const INDEX_DATA = ref();
-const PREVIEW_LOOKUP = ref();
-const Options = ref<Options>();
-const searchIndex = ref();
-const buttonLabel = ref("Search");
-const placeholder = ref("Search docs");
+// const metaKey = ref();
+// const open = ref<Boolean>(false);
+// const searchTerm = ref<string | null>();
+// const origin = ref<string>("");
+// const input = ref();
+// const INDEX_DATA = ref();
+// const PREVIEW_LOOKUP = ref();
+// const Options = ref<Options>();
+// const searchIndex = ref();
+// const buttonLabel = ref("Search");
+// const placeholder = ref("Search docs");
 
-interface Options {
-  previewLength: number;
-  buttonLabel: string;
-  placeholder: string;
-}
+// interface Options {
+//   previewLength: number;
+//   buttonLabel: string;
+//   placeholder: string;
+// }
 
-const result = computed(() => {
-  if (searchTerm.value) {
-    var searchResults = searchIndex.value.search(searchTerm.value, { enrich: true })
+// const result = computed(() => {
+//   if (searchTerm.value) {
+//     var searchResults = searchIndex.value.search(searchTerm.value, {
+//       enrich: true,
+//     });
 
-    var search = [] as any[];
+//     var search = [] as any[];
 
-    for (var i = 0; i < searchResults.length; i++) {
-      var id = searchResults[i];
-      var item = PREVIEW_LOOKUP.value[id];
+//     for (var i = 0; i < searchResults.length; i++) {
+//       var id = searchResults[i];
+//       var item = PREVIEW_LOOKUP.value[id];
 
-      var title = item["t"];
-      var preview = item["p"];
-      var link = item["l"];
-      var anchor = item["a"];
-      link = link.split(" ").join("-");
-      search.push({id: i, link, title, preview, anchor });
-    }
-    return search as any[];
-  }
-});
+//       var title = item["t"];
+//       var preview = item["p"];
+//       var link = item["l"];
+//       var anchor = item["a"];
+//       link = link.split(" ").join("-");
+//       search.push({ id: i, link, title, preview, anchor });
+//     }
+//     return search as any[];
+//   }
+// });
 
-const GroupBy = (array: any, func: Function) => {
-  if (!array || !array.length) return [];
+// const GroupBy = (array: any, func: Function) => {
+//   if (!array || !array.length) return [];
 
-  return array.reduce((acc: any, value: any) => {
-    // Group initialization
-    if (!acc[func(value)]) {
-      acc[func(value)] = [];
-    }
+//   return array.reduce((acc: any, value: any) => {
+//     // Group initialization
+//     if (!acc[func(value)]) {
+//       acc[func(value)] = [];
+//     }
 
-    // Grouping
-    acc[func(value)].push(value);
+//     // Grouping
+//     acc[func(value)].push(value);
 
-    return acc;
-  }, {});
-};
+//     return acc;
+//   }, {});
+// };
 
-const openSearch = () => {
-  setTimeout(() => {
-    if (input.value) input.value.focus();
-  }, 100);
-  cleanSearch();
-  open.value = true;
-};
+// const openSearch = () => {
+//   setTimeout(() => {
+//     if (input.value) input.value.focus();
+//   }, 100);
+//   cleanSearch();
+//   open.value = true;
+// };
 
+// onMounted(async () => {
+//   const data = await import("virtual:search-data");
+//   INDEX_DATA.value = data.default.INDEX_DATA;
+//   PREVIEW_LOOKUP.value = data.default.PREVIEW_LOOKUP;
+//   Options.value = data.default.Options;
+//   origin.value =
+//     window.location.origin +
+//     withBase(locale.value === "root" ? "/" : locale.value);
+//   buttonLabel.value = Options.value?.buttonLabel || buttonLabel.value;
+//   placeholder.value = Options.value?.placeholder || placeholder.value;
+
+//   var document = new Index(Options.value);
+
+//   document.import("reg", INDEX_DATA.value.reg);
+//   document.import("cfg", INDEX_DATA.value.cfg);
+//   document.import("map", INDEX_DATA.value.map);
+//   document.import("ctx", INDEX_DATA.value.ctx);
+
+//   searchIndex.value = document;
+
+//   metaKey.value.innerHTML = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)
+//     ? "⌘"
+//     : "Ctrl";
+
+//   const handleSearchHotKey = (e: KeyboardEvent) => {
+//     if (e.key === "k" && (e.ctrlKey || e.metaKey)) {
+//       e.preventDefault();
+//       openSearch();
+//     }
+//     if (e.key === "Escape") {
+//       if (searchTerm.value?.length == 0 && open.value) open.value = false;
+//     }
+//   };
+
+//   window.addEventListener("keydown", handleSearchHotKey);
+// });
+
+// function cleanSearch() {
+//   open.value = false;
+//   searchTerm.value = "";
+// }
+
+// Add listener to root HTML element to see if the page is dark mode
 onMounted(async () => {
-  const data = await import("virtual:search-data");
-  INDEX_DATA.value = data.default.INDEX_DATA;
-  PREVIEW_LOOKUP.value = data.default.PREVIEW_LOOKUP;
-  Options.value = data.default.Options;
-  origin.value = window.location.origin + withBase(locale.value === 'root' ? '/' : locale.value);
-  buttonLabel.value = Options.value?.buttonLabel || buttonLabel.value;
-  placeholder.value = Options.value?.placeholder || placeholder.value;
-
-  var document = new Index(Options.value);
-
-  document.import("reg", INDEX_DATA.value.reg)
-  document.import("cfg", INDEX_DATA.value.cfg)
-  document.import("map", INDEX_DATA.value.map)
-  document.import("ctx", INDEX_DATA.value.ctx)
-
-  searchIndex.value = document
-
-  metaKey.value.innerHTML = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)
-    ? "⌘"
-    : "Ctrl";
-
-  const handleSearchHotKey = (e: KeyboardEvent) => {
-    if (e.key === "k" && (e.ctrlKey || e.metaKey)) {
-      e.preventDefault();
-      openSearch();
+  function updateDarkMode() {
+    const darkMode = document.documentElement.classList.contains("dark");
+    if (darkMode) {
+      // @ts-ignore
+      document
+        .getElementById("sidekick-search-iframe")
+        // @ts-ignore
+        .contentWindow.postMessage(
+          {
+            type: "darkMode",
+            value: true,
+          },
+          "*"
+        );
+    } else {
+      // @ts-ignore
+      document
+        .getElementById("sidekick-search-iframe")
+        // @ts-ignore
+        .contentWindow.postMessage(
+          {
+            type: "darkMode",
+            value: false,
+          },
+          "*"
+        );
     }
-    if (e.key === "Escape"){
-      if (searchTerm.value?.length == 0 && open.value)
-        open.value = false
+  }
+
+  const observer = new MutationObserver(updateDarkMode);
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
+
+  // also run on iframe load
+  const iframe = document.getElementById("sidekick-search-iframe");
+  iframe?.addEventListener("load", updateDarkMode);
+
+  window.addEventListener("message", (event) => {
+    if (event.data.type === "sidekick-search-open" && iframe) {
+      console.log("sidekick-search-open", event.data.value);
+
+      if (event.data.value) {
+        // iframe?.classList.add("sidekick-search-active");
+        iframe.style.height = "60vh";
+      } else {
+        // iframe?.classList.remove("sidekick-search-active");
+        iframe.style.height = "3rem";
+      }
     }
-  };
-
-  window.addEventListener("keydown", handleSearchHotKey);
-
+  });
 });
-
-function cleanSearch() {
-  open.value = false;
-  searchTerm.value = "";
-}
 </script>
 
 <template>
   <div class="VPNavBarSearch">
-    <!-- <SearchBox /> -->
-    <ClientOnly>
-      <Teleport to="body">
-        <div v-show="open" class="VPPluginSearch-modal-back" @click="open = false">
-          <div class="VPPluginSearch-modal" @click.stop>
-            <form class="DocSearch-Form">
-              <label
-                class="DocSearch-MagnifierLabel"
-                for="docsearch-input"
-                id="docsearch-label"
-                ><svg
-                  width="20"
-                  height="20"
-                  class="DocSearch-Search-Icon"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    d="M14.386 14.386l4.0877 4.0877-4.0877-4.0877c-2.9418 2.9419-7.7115 2.9419-10.6533 0-2.9419-2.9418-2.9419-7.7115 0-10.6533 2.9418-2.9419 7.7115-2.9419 10.6533 0 2.9419 2.9418 2.9419 7.7115 0 10.6533z"
-                    stroke="currentColor"
-                    fill="none"
-                    fill-rule="evenodd"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></path>
-                </svg>
-              </label>
-
-              <input
-                class="DocSearch-Input"
-                aria-autocomplete="both"
-                aria-labelledby="docsearch-label"
-                id="docsearch-input"
-                autocomplete="off"
-                autocorrect="off"
-                autocapitalize="off"
-                enterkeyhint="search"
-                spellcheck="false"
-                autofocus="true"
-                v-model="searchTerm"
-                :placeholder=placeholder
-                maxlength="64"
-                type="search"
-                ref="input"
-              />
-            </form>
-            <div class="VPPluginSearch-search-list">
-              <div
-                v-for="(group, groupKey) of GroupBy(result, (x:any) =>
-                  x.link.split('/').slice(0, -1).join('-')
-                )"
-                :key="groupKey"
-              >
-                <span class="VPPluginSearch-search-group">{{
-                  groupKey
-                    ? groupKey.toString()[0].toUpperCase() +
-                      groupKey.toString().slice(1)
-                    : "Home"
-                }}</span>
-                <a
-                  :href="origin + item.link"
-                  v-for="item in group"
-                  :key="item.id"
-                  @click="cleanSearch"
-                >
-                  <div class="VPPluginSearch-search-item">
-                    <span class="VPPluginSearch-search-item-icon">{{
-                      item.link.includes("#") ? "#" : "▤"
-                    }}</span>
-                    <div style="width: 100%">
-                      <h3>{{ item.title }}</h3>
-                      <p> <div v-html="item.preview"></div> </p>
-                    </div>
-                    <span class="VPPluginSearch-search-item-icon">↪</span>
-                  </div>
-                </a>
-              </div>
-            </div>
-            <img class="VPPluginSearch-flex-logo" src="./flex-logo.svg" alt="flex logo"/>
-          </div>
-        </div>
-      </Teleport>
-    </ClientOnly>
-    <div id="docsearch" @click="openSearch()">
-      <button
-        type="button"
-        class="DocSearch DocSearch-Button"
-        aria-label="Search"
-      >
-        <span class="DocSearch-Button-Container">
-          <svg
-            width="20"
-            height="20"
-            class="DocSearch-Search-Icon"
-            viewBox="0 0 20 20"
-          >
-            <path
-              d="M14.386 14.386l4.0877 4.0877-4.0877-4.0877c-2.9418 2.9419-7.7115 2.9419-10.6533 0-2.9419-2.9418-2.9419-7.7115 0-10.6533 2.9418-2.9419 7.7115-2.9419 10.6533 0 2.9419 2.9418 2.9419 7.7115 0 10.6533z"
-              stroke="currentColor"
-              fill="none"
-              fill-rule="evenodd"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            ></path>
-          </svg>
-          <span class="DocSearch-Button-Placeholder">{{buttonLabel}}</span>
-        </span>
-        <span class="DocSearch-Button-Keys">
-          <span class="DocSearch-Button-Key" ref="metaKey">Meta</span>
-          <span class="DocSearch-Button-Key">K</span>
-        </span>
-      </button>
+    <div
+      style="
+        position: relative;
+        flex-grow: 1;
+        margin-top: -1.2rem;
+        margin-left: 3rem;
+        margin-right: 1rem;
+      "
+    >
+      <iframe
+        id="sidekick-search-iframe"
+        src="http://localhost:5174"
+        frameborder="0"
+        allowtransparency="true"
+        style=""
+      ></iframe>
     </div>
   </div>
 </template>
 
 <style>
-.VPPluginSearch-flex-logo{
+.VPNavBarSearch {
+  flex-grow: 1;
+}
+
+#sidekick-search-iframe {
+  background: transparent;
+  position: absolute;
+  height: 3rem;
+  width: 100%;
+  z-index: 100;
+  color-scheme: light;
+}
+
+#sidekick-search-active {
+  height: 60vh;
+}
+</style>
+
+<!-- <style>
+.VPPluginSearch-flex-logo {
   width: 80px;
   margin-left: calc(100% - 90px);
   padding-bottom: 10px;
@@ -587,7 +570,7 @@ body.dark .DocSearch-Button:hover {
   padding: 0 1px;
 }
 
-.VPPluginSearch-search-group{
-  color: var(--vp-c-brand-1)
+.VPPluginSearch-search-group {
+  color: var(--vp-c-brand-1);
 }
-</style>
+</style> -->
