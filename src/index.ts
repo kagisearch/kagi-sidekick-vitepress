@@ -12,6 +12,7 @@ const DEFAULT_OPTIONS: Options = {
   previewLength: 62,
   buttonLabel: "Search",
   placeholder: "Search docs",
+  origin: "",
   allow: [],
   ignore: [],
 };
