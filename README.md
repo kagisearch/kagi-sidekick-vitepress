@@ -1,51 +1,25 @@
-## Provides local search to your documentation site
+## Sidekick Vitepress Plugin
 
-Uses [flexsearch](https://github.com/nextapps-de/flexsearch).
+## License
 
-## Installing
+MIT License
 
-```js
-npm i vitepress-plugin-search flexsearch -D
-```
+Copyright (c) 2017 Form.io
 
-## Add the plugin
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-- Using an vite.config file
-```js
-//vite.config.ts
-import { SearchPlugin } from "vitepress-plugin-search";
-import { defineConfig } from "vite";
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-//default options
-var options = {
-  ...flexSearchIndexOptions,
-  previewLength: 62,
-  buttonLabel: "Search",
-  placeholder: "Search docs",
-  allow: [],
-  ignore: [],
-};
-
-export default defineConfig({
-  plugins: [SearchPlugin(options)],
-});
-```
-
-- Using config.js or config.ts
-```js
-import { SearchPlugin } from "vitepress-plugin-search";
-import { defineConfig } from "vitepress";
-export default defineConfig({
-  vite: { plugins: [SearchPlugin(options)] }
-});
-```
-
-## Options
-
-Accept [FlexSearch Index Options](https://github.com/nextapps-de/flexsearch#options)
-
-## Multi language support
-
-Provided by flexsearch  
-  
-See [chinese settings for example](https://github.com/emersonbottero/vitepress-plugin-search/issues/11)
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

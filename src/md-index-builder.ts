@@ -39,25 +39,28 @@ export async function IndexSearch(
   HTML_FOLDER: string,
   options: Options
 ): Promise<string> {
-  console.log("  🔎 Indexing...");
-  if (options.previewLength) MAX_PREVIEW_CHARS = options.previewLength;
-  const docs = await buildDocs(HTML_FOLDER, options);
-  const previews = buildPreviews(docs);
-  const flexIdx = buildIndexSearch(docs, options);
-  var Export = {
-    reg: JSON.stringify(flexIdx.registry),
-    cfg: JSON.stringify(flexIdx.cfg),
-    map: JSON.stringify(flexIdx.map),
-    ctx: JSON.stringify(flexIdx.ctx),
-  };
+  // console.log("  🔎 Indexing...");
+  // if (options.previewLength) MAX_PREVIEW_CHARS = options.previewLength;
+  // const docs = await buildDocs(HTML_FOLDER, options);
+  // const previews = buildPreviews(docs);
+  // const flexIdx = buildIndexSearch(docs, options);
+  // var Export = {
+  //   reg: JSON.stringify(flexIdx.registry),
+  //   cfg: JSON.stringify(flexIdx.cfg),
+  //   map: JSON.stringify(flexIdx.map),
+  //   ctx: JSON.stringify(flexIdx.ctx),
+  // };
 
-  const js = `const INDEX_DATA = ${JSON.stringify(Export)};
-  const PREVIEW_LOOKUP = ${JSON.stringify(previews)};
-  const Options = ${JSON.stringify(options)};
-  const data = { INDEX_DATA, PREVIEW_LOOKUP, Options };
-  export default data;`;
+  // const js = `const INDEX_DATA = ${JSON.stringify(Export)};
+  // const PREVIEW_LOOKUP = ${JSON.stringify(previews)};
+  // const Options = ${JSON.stringify(options)};
+  // const data = { INDEX_DATA, PREVIEW_LOOKUP, Options };
+  // export default data;`;
 
-  console.log("  🔎 Done.");
+  // console.log("  🔎 Done.");
 
-  return js;
+  // return js;
+  return `const Options = ${JSON.stringify(options)};
+  export default { Options };`;
+
 }

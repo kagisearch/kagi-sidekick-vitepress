@@ -27,6 +27,7 @@ export interface Options extends indexOption {
   previewLength: number;
   buttonLabel: string;
   placeholder: string;
+  origin: string;
   allow: (string | RegExp)[];
   ignore: (string | RegExp)[];
 }
