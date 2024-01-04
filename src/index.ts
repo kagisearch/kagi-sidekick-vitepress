@@ -37,7 +37,7 @@ export function SearchPlugin(searchOptions?: Partial<Options>): Plugin {
 
     config: () => ({
       resolve: {
-        alias: { "./VPNavBarSearch.vue": "vitepress-plugin-search/Search.vue" },
+        alias: { "./VPNavBarSearch.vue": "kagi-sidekick-vitepress/Search.vue" },
       },
     }),
 
