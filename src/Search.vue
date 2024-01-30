@@ -139,10 +139,32 @@ onMounted(async () => {
           },
           "*"
         );
+      // @ts-ignore
+      document
+        .getElementById("sidekick-chat-iframe")
+        // @ts-ignore
+        .contentWindow.postMessage(
+          {
+            type: "darkMode",
+            value: true,
+          },
+          "*"
+        );
     } else {
       // @ts-ignore
       document
         .getElementById("sidekick-search-iframe")
+        // @ts-ignore
+        .contentWindow.postMessage(
+          {
+            type: "darkMode",
+            value: false,
+          },
+          "*"
+        );
+      // @ts-ignore
+      document
+        .getElementById("sidekick-chat-iframe")
         // @ts-ignore
         .contentWindow.postMessage(
           {
@@ -164,6 +186,28 @@ onMounted(async () => {
   // also run on iframe load
   const iframe = document.getElementById("sidekick-search-iframe");
   iframe?.addEventListener("load", updateDarkMode);
+  iframe?.addEventListener("load", () => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const searchString = urlParams.get("q") || urlParams.get("search");
+
+    if (searchString) {
+      // @ts-ignore
+      document
+        .getElementById("sidekick-search-iframe")
+        // @ts-ignore
+        .contentWindow.postMessage(
+          {
+            type: "sidekick-search-query",
+            value: searchString,
+          },
+          "*"
+        );
+    }
+  });
+
+  const chatIframe = document.getElementById("sidekick-chat-iframe");
+  chatIframe?.addEventListener("load", updateDarkMode);
 
   window.addEventListener("message", (event) => {
     console.log("message", event.data);
@@ -195,6 +239,7 @@ onMounted(async () => {
 
   function handleSearchHotKey(e: KeyboardEvent) {
     if (e.key === "k" && (e.ctrlKey || e.metaKey)) {
+      console.log("open search hotkey");
       e.preventDefault();
       // focus iframe
       // @ts-ignore
@@ -372,7 +417,7 @@ function closeSearch() {
     padding: 2rem;
     height: 100vh;
     /* glassy (slightly gray blur) */
-    background: rgba(100, 100, 100, 0.5);
+    background: rgba(0, 0, 0, 0.3);
   }
 }
 </style>
