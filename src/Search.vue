@@ -111,34 +111,9 @@ const chatMinimized = ref<boolean>(false);
 
 // Add listener to root HTML element to see if the page is dark mode
 onMounted(async () => {
-  setInterval(() => {
-    // @ts-ignore
-    document
-      .getElementById("sidekick-search-iframe")
-      // @ts-ignore
-      .contentWindow.postMessage(
-        {
-          type: "sidekick-url",
-          value: window.location.href,
-        },
-        "*"
-      );
-  }, 1000);
-
   function updateDarkMode() {
     const darkMode = document.documentElement.classList.contains("dark");
     if (darkMode) {
-      // @ts-ignore
-      document
-        .getElementById("sidekick-search-iframe")
-        // @ts-ignore
-        .contentWindow.postMessage(
-          {
-            type: "darkMode",
-            value: true,
-          },
-          "*"
-        );
       // @ts-ignore
       document
         .getElementById("sidekick-chat-iframe")
@@ -151,17 +126,6 @@ onMounted(async () => {
           "*"
         );
     } else {
-      // @ts-ignore
-      document
-        .getElementById("sidekick-search-iframe")
-        // @ts-ignore
-        .contentWindow.postMessage(
-          {
-            type: "darkMode",
-            value: false,
-          },
-          "*"
-        );
       // @ts-ignore
       document
         .getElementById("sidekick-chat-iframe")
@@ -183,49 +147,13 @@ onMounted(async () => {
     attributeFilter: ["class"],
   });
 
-  // also run on iframe load
-  const iframe = document.getElementById("sidekick-search-iframe");
-  iframe?.addEventListener("load", updateDarkMode);
-  iframe?.addEventListener("load", () => {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const searchString = urlParams.get("q") || urlParams.get("search");
-
-    if (searchString) {
-      // @ts-ignore
-      document
-        .getElementById("sidekick-search-iframe")
-        // @ts-ignore
-        .contentWindow.postMessage(
-          {
-            type: "sidekick-search-query",
-            value: searchString,
-          },
-          "*"
-        );
-    }
-  });
 
   const chatIframe = document.getElementById("sidekick-chat-iframe");
   chatIframe?.addEventListener("load", updateDarkMode);
 
   window.addEventListener("message", (event) => {
     console.log("message", event.data);
-    if (event.data.type === "sidekick-search-open" && iframe) {
-      if (event.data.value) {
-        iframe?.classList.add("sidekick-search-active");
-        // iframe.style.height = "60vh";
-        // open.value = true;
-      } else {
-        iframe?.classList.remove("sidekick-search-active");
-        // iframe.style.height = "3rem";
-        // open.value = false;
-      }
-    }
 
-    if (event.data.type === "sidekick-search-close") {
-      searchOpen.value = false;
-    }
 
     if (event.data.type === "sidekick-chat-open") {
       chatOpen.value = !!event.data.value;
@@ -237,32 +165,16 @@ onMounted(async () => {
     }
   });
 
-  function handleSearchHotKey(e: KeyboardEvent) {
-    if (e.key === "k" && (e.ctrlKey || e.metaKey)) {
-      console.log("open search hotkey");
-      e.preventDefault();
-      // focus iframe
-      // @ts-ignore
-      document.getElementById("sidekick-search-iframe").contentWindow.focus();
-      searchOpen.value = true;
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const searchString = urlParams.get("q") || urlParams.get("search");
 
-      // @ts-ignore
-      document
-        .getElementById("sidekick-search-iframe")
-        // @ts-ignore
-        .contentWindow.postMessage(
-          {
-            type: "sidekick-focus",
-          },
-          "*"
-        );
-    }
-    if (e.key === "Escape") {
-      searchOpen.value = false;
-    }
+  if (searchString) {
+    openSearch();
   }
 
-  window.addEventListener("keydown", handleSearchHotKey);
+  // @ts-ignore
+  import("https://sidekick-ui.pages.dev/component.js")
 });
 
 // on open change, console log the value
@@ -294,16 +206,27 @@ function closeSearch() {
       </svg>
     </button>
     <!-- <div id="sidekick-container"> -->
-    <iframe
+    <!-- <iframe
       id="sidekick-search-iframe"
       class="sidekick-search-iframe"
       :class="{ 'sidekick-search-open': searchOpen }"
       :src="Options?.origin"
       frameborder="0"
       allowtransparency="true"
-    ></iframe>
+    ></iframe> -->
+    <!-- <script src="/src/component.ts" type="module"></script> -->
+  <!-- </head>
+
+  <body> -->
+      <sidekick-search 
+      id="sidekick-search-iframe"
+        class="sidekick-search-iframe"
+        :class="{ 'sidekick-search-open': searchOpen }"
+        :origin="Options?.origin"
+        @click="closeSearch"
+        ></sidekick-search>
     <iframe
-      :src="Options?.origin + '/chat.html'"
+      src="https://sidekick-ui.pages.dev/chat.html"
       id="sidekick-chat-iframe"
       class="sidekick-chat-iframe"
       :class="{
@@ -313,15 +236,6 @@ function closeSearch() {
       frameborder="0"
       allowtransparency="true"
       allow="*"
-      style="
-        /* background: transparent;
-        position: fixed;
-        bottom: 1rem;
-        right: 1rem;
-        z-index: 100;
-        height: 60vh;
-        width: 24rem; */
-      "
     ></iframe>
     <!-- </div> -->
   </div>
@@ -331,14 +245,6 @@ function closeSearch() {
 .VPNavBarSearch {
   flex-grow: 1;
   position: relative;
-}
-
-#sidekick-container {
-  /* position: relative;
-  flex-grow: 1;
-  margin-top: -1.2rem;
-  margin-left: 3rem;
-  margin-right: 1rem; */
 }
 
 #sidekick-search-button {
@@ -421,4 +327,3 @@ function closeSearch() {
   }
 }
 </style>
-\
