@@ -1,26 +1,6 @@
 <script lang="ts" setup>
 import { ref, onMounted, watch, computed } from "vue";
-// import { useData, withBase } from "vitepress";
-// // @ts-ignore
-// import Index from "./module/index.js";
-
-// //TODO: delete deprecate code
-// const VPData = useData();
-
-// // @ts-ignore
-// const locale = VPData.localeIndex || VPData.localePath;
-
-// const metaKey = ref();
-// const open = ref<Boolean>(false);
-// const searchTerm = ref<string | null>();
-// const origin = ref<string>("");
-// const input = ref();
-// const INDEX_DATA = ref();
-// const PREVIEW_LOOKUP = ref();
 const Options = ref<Options>();
-// const searchIndex = ref();
-// const buttonLabel = ref("Search");
-// const placeholder = ref("Search docs");
 
 interface Options {
   origin: string;
@@ -29,80 +9,9 @@ interface Options {
   placeholder: string;
 }
 
-// const result = computed(() => {
-//   if (searchTerm.value) {
-//     var searchResults = searchIndex.value.search(searchTerm.value, {
-//       enrich: true,
-//     });
-
-//     var search = [] as any[];
-
-//     for (var i = 0; i < searchResults.length; i++) {
-//       var id = searchResults[i];
-//       var item = PREVIEW_LOOKUP.value[id];
-
-//       var title = item["t"];
-//       var preview = item["p"];
-//       var link = item["l"];
-//       var anchor = item["a"];
-//       link = link.split(" ").join("-");
-//       search.push({ id: i, link, title, preview, anchor });
-//     }
-//     return search as any[];
-//   }
-// });
-
-// const GroupBy = (array: any, func: Function) => {
-//   if (!array || !array.length) return [];
-
-//   return array.reduce((acc: any, value: any) => {
-//     // Group initialization
-//     if (!acc[func(value)]) {
-//       acc[func(value)] = [];
-//     }
-
-//     // Grouping
-//     acc[func(value)].push(value);
-
-//     return acc;
-//   }, {});
-// };
-
 onMounted(async () => {
   const data = await import("virtual:search-data");
-  // INDEX_DATA.value = data.default.INDEX_DATA;
-  // PREVIEW_LOOKUP.value = data.default.PREVIEW_LOOKUP;
   Options.value = data.default.Options;
-  // origin.value =
-  //   window.location.origin +
-  //   withBase(locale.value === "root" ? "/" : locale.value);
-  // buttonLabel.value = Options.value?.buttonLabel || buttonLabel.value;
-  // placeholder.value = Options.value?.placeholder || placeholder.value;
-
-  // var document = new Index(Options.value);
-
-  // document.import("reg", INDEX_DATA.value.reg);
-  // document.import("cfg", INDEX_DATA.value.cfg);
-  // document.import("map", INDEX_DATA.value.map);
-  // document.import("ctx", INDEX_DATA.value.ctx);
-
-  // searchIndex.value = document;
-
-  // metaKey.value.innerHTML = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)
-  //   ? "⌘"
-  //   : "Ctrl";
-
-  // const handleSearchHotKey = (e: KeyboardEvent) => {
-  //   if (e.key === "k" && (e.ctrlKey || e.metaKey)) {
-  //     e.preventDefault();
-  //     openSearch();
-  //   }
-  //   if (e.key === "Escape") {
-  //     if (searchTerm.value?.length == 0 && open.value) open.value = false;
-  //   }
-  // };
-
-  // window.addEventListener("keydown", handleSearchHotKey);
 });
 
 const searchOpen = ref<boolean>(false);
