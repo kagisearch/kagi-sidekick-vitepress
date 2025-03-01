@@ -164,15 +164,17 @@ function closeSearch() {
   background: transparent;
   position: absolute;
   /* padding-top: 0.7rem; */
-  padding-left: 3rem;
-  padding-right: 2rem;
+  /* padding-left: 3rem;
+  padding-right: 2rem; */
   top: -1.2rem;
   /* left: 3rem;
   right: 2rem; */
   height: 4rem;
-  width: 100%;
+  /* width: 100%; */
   z-index: 100;
   color-scheme: light;
+  left: min(7rem, 12%);
+  right: 1rem;
 }
 
 .sidekick-chat-iframe {
