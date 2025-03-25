@@ -83,7 +83,7 @@ onMounted(async () => {
   }
 
   // @ts-ignore
-  import("https://sidekick-ui.pages.dev/component.js")
+  import("https://sidekick-ui-next.kagi.com/component.js")
 });
 
 // on open change, console log the value
@@ -135,7 +135,7 @@ function closeSearch() {
         @click="closeSearch"
         ></sidekick-search>
     <iframe
-      src="https://sidekick-ui.pages.dev/chat.html"
+      src="https://sidekick-ui-next.kagi.com/chat.html"
       id="sidekick-chat-iframe"
       class="sidekick-chat-iframe"
       :class="{
