@@ -1,8 +1,7 @@
 import MarkdownIt from "markdown-it";
 import { Options } from "./types.js";
 import buildDocs from "./docs-builder.js";
-// @ts-ignore
-import FlexSearch from "flexsearch/dist/flexsearch.bundle.js";
+import FlexSearch from "flexsearch";
 
 const md = new MarkdownIt();
 let MAX_PREVIEW_CHARS = 62; // Number of characters to show for a given search result
